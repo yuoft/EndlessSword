@@ -1,0 +1,38 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "ABA",
+    "DEF",
+    "GHI"
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:nether_star"
+    },
+    "B": {
+      "item": "minecraft:dragon_egg"
+    },
+    "D": {
+      "item": "endless:infinity_helmet"
+    },
+    "E": {
+      "item": "endless:infinity_chestplate"
+    },
+    "F": {
+      "item": "endless:infinity_sword"
+    },
+    "G": {
+      "item": "endless:infinity_leggings"
+    },
+    "H": {
+      "item": "endless:infinity_boots"
+    },
+    "I": {
+      "item": "endless:infinity_pickaxe"
+    }
+  },
+  "result": {
+    "item": "endless_sword:es"
+  }
+}

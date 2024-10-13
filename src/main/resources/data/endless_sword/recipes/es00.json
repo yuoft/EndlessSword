@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "FI "
+  ],
+  "key": {
+    "F": {
+      "item": "endless_sword:es"
+    },
+    "I": {
+      "item": "endless:infinity_bow"
+    }
+  },
+  "result": {
+    "item": "endless_sword:es00"
+  }
+}
