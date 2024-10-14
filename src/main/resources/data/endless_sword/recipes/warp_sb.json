@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ABA",
+    " I ",
+    "ABA"
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:nether_star"
+    },
+    "B": {
+      "item": "minecraft:dragon_egg"
+    },
+    "I": {
+      "item": "endless:infinity_bow"
+    }
+  },
+  "result": {
+    "item": "endless_sword:warp_sb"
+  }
+}

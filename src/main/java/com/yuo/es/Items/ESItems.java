@@ -10,6 +10,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class ESItems {
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, EndlessSword.MOD_ID);
 
-	public static RegistryObject<Item> es = ITEMS.register("es", ESSlashItem::new);
-	public static RegistryObject<Item> es00 = ITEMS.register("es00", ESSlashItem0::new);
+	public static RegistryObject<Item> infinitySb = ITEMS.register("infinity_sb", InfinitySB::new);
+	public static RegistryObject<Item> warpSb = ITEMS.register("warp_sb", WarpSB::new);
 }
