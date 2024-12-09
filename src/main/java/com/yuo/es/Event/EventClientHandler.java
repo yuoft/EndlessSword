@@ -21,5 +21,4 @@ public class EventClientHandler {
         event.getModelRegistry().put(loc, model);
         event.getModelRegistry().put(loc0, model0);
     }
-
 }

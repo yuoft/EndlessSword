@@ -3,7 +3,7 @@ loaderVersion="[36,)"
 license="All rights reserved"
 [[mods]] #mandatory
 modId="endless_sword"
-version="1.16.5-0.0.2"
+version="1.16.5-0.0.3"
 displayName="ES"
 authors="yuo"
 logoFile=""

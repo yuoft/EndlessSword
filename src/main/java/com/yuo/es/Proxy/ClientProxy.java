@@ -1,7 +1,9 @@
 package com.yuo.es.Proxy;
 
+import com.yuo.es.Entity.ColorLightBoltRender;
+import com.yuo.es.Entity.EsEntityTypes;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
@@ -16,8 +18,7 @@ public class ClientProxy implements IProxy {
         modBus.addListener(this::clientSetup);
     }
 
-    @SubscribeEvent
     public void clientSetup(final FMLClientSetupEvent event) {
+        RenderingRegistry.registerEntityRenderingHandler(EsEntityTypes.COLOR_LIGHT_BOLT.get(), ColorLightBoltRender::new);
     }
-
 }

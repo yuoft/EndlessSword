@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "package": "com.yuo.es.Mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "endless_sword.refmap.json",
+  "plugin": "com.yuo.es.Mixin.MixinPlugin",
+  "mixins": [
+    "SwordArtsMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8"
+}

@@ -7,28 +7,32 @@ import com.yuo.endless.Items.Tool.ColorText;
 import com.yuo.endless.Items.Tool.InfinityDamageSource;
 import com.yuo.endless.Items.Tool.MyItemTier;
 import com.yuo.es.EndlessSword;
+import com.yuo.es.Entity.ColorLightBolt;
+import com.yuo.es.Entity.EsEntityTypes;
 import mods.flammpfeil.slashblade.SlashBlade.RegistryEvents;
 import mods.flammpfeil.slashblade.client.renderer.SlashBladeTEISR;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
-import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.ForgeMod;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -43,30 +47,14 @@ public class InfinitySB extends ItemSlashBlade {
                 new Properties().group(EndlessTab.endless).maxStackSize(1).isImmuneToFire().setISTER(() -> SlashBladeTEISR::new));
     }
 
-//    @Override
-//    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
-//        Multimap<Attribute, AttributeModifier> def = super.getAttributeModifiers(slot, stack);
-//        Multimap<Attribute, AttributeModifier> result = ArrayListMultimap.create();
-//        result.putAll(Attributes.ATTACK_DAMAGE, def.get(Attributes.ATTACK_DAMAGE));
-//        result.putAll(Attributes.ATTACK_SPEED, def.get(Attributes.ATTACK_SPEED));
-//        if (slot == EquipmentSlotType.MAINHAND) {
-//            LazyOptional<ISlashBladeState> state = stack.getCapability(BLADESTATE);
-//            state.ifPresent((s) -> {
-//                s.setBaseAttackModifier(Float.POSITIVE_INFINITY);
-//                s.setModel(new ResourceLocation(EndlessSword.MOD_ID, "model/infinity_sb.obj"));
-//                s.setTexture(new ResourceLocation(EndlessSword.MOD_ID, "model/infinity_sb.png"));
-//                float baseAttackModifier = s.getBaseAttackModifier();
-//                AttributeModifier base = new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", (double)baseAttackModifier, Operation.ADDITION);
-//                result.remove(Attributes.ATTACK_DAMAGE, base);
-//                result.put(Attributes.ATTACK_DAMAGE, base);
-//                float rankAttackAmplifier = s.getAttackAmplifier();
-//                result.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ATTACK_DAMAGE_AMPLIFIER, "Weapon amplifier", (double)rankAttackAmplifier, Operation.ADDITION));
-//                result.put(ForgeMod.REACH_DISTANCE.get(), new AttributeModifier(PLAYER_REACH_AMPLIFIER, "Reach amplifer", s.isBroken() ? 0.0 : 1.5, Operation.ADDITION));
-//            });
-//        }
-//
-//        return result;
-//    }
+    @Override
+    public boolean isDamaged(ItemStack stack) {
+        return false;
+    }
+
+    @Override
+    public void setDamage(ItemStack stack, int damage) {
+    }
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> components, ITooltipFlag flag) {
@@ -112,6 +100,53 @@ public class InfinitySB extends ItemSlashBlade {
     }
 
     @Override
+    public boolean onLeftClickEntity(ItemStack itemstack, PlayerEntity playerIn, Entity entity) {
+        if (entity instanceof LivingEntity) {
+            LivingEntity livingEntity = (LivingEntity) entity;
+            hit(livingEntity, playerIn);
+        }
+        hitDisEntity(playerIn);
+        return super.onLeftClickEntity(itemstack, playerIn, entity);
+    }
+
+    private static void hitDisEntity(PlayerEntity playerIn) {
+        Attribute attribute = ForgeMod.REACH_DISTANCE.get();
+        double dis = attribute.getDefaultValue() * 10;
+        if (playerIn.isSneaking()){
+            Vector3d eyePosition = playerIn.getEyePosition(1.0f);
+            Vector3d lookVec = playerIn.getLook(1.0f);
+            Vector3d add = eyePosition.add(lookVec.scale(dis));
+            AxisAlignedBB alignedBB = new AxisAlignedBB(eyePosition, add);
+            List<LivingEntity> entityList = playerIn.world.getEntitiesWithinAABB(LivingEntity.class, alignedBB);
+            for (LivingEntity living : entityList) {
+                if (living.isAlive() && !(living instanceof PlayerEntity)){
+                    living.onKillCommand();
+                }
+            }
+        }else {
+
+        }
+
+        /*
+        Optional<RayTraceResult> result = RayTraceHelper.rayTrace(player.world, player, player.getEyePosition(1.0F), player.getLookVec(), 12.0, 12.0, (Predicate)null);
+                        Optional<Entity> foundEntity = result.filter((r) -> {
+                            return r.getType() == Type.ENTITY;
+                        }).filter((r) -> {
+                            EntityRayTraceResult er = (EntityRayTraceResult)r;
+                            Entity target = ((EntityRayTraceResult)r).getEntity();
+                            boolean isMatch = true;
+                            if (target instanceof LivingEntity) {
+                                isMatch = TargetSelector.lockon_focus.canTarget(player, (LivingEntity)target);
+                            }
+
+                            return isMatch;
+                        }).map((r) -> {
+                            return ((EntityRayTraceResult)r).getEntity();
+                        });
+         */
+    }
+
+    @Override
     public boolean hitEntity(ItemStack stackF, LivingEntity target, LivingEntity attacker) {
         hit(target, attacker);
         return super.hitEntity(stackF, target, attacker);
@@ -129,18 +164,10 @@ public class InfinitySB extends ItemSlashBlade {
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
-        BlockPos pos = playerIn.getPosition();
-        for (int i = 2; i < 20; i+=4){
-            for (int j = 2; j < 20; j+=4){
-                BlockPos blockPos = pos.add(i,-1, j);
-                BlockPos blockPos0 = pos.add(-i,-1, -j);
-                BlockPos blockPos1 = pos.add(i,-1, -j);
-                BlockPos blockPos2 = pos.add(-i,-1, j);
-                addBlot(worldIn, blockPos, playerIn);
-                addBlot(worldIn, blockPos0, playerIn);
-                addBlot(worldIn, blockPos1, playerIn);
-                addBlot(worldIn, blockPos2, playerIn);
-            }
+        if (!worldIn.isRemote && worldIn instanceof ServerWorld) {
+//            if (!playerIn.isSneaking()){
+                hitDisEntity(playerIn);
+//            }else addBlot(worldIn, playerIn);
         }
         return super.onItemRightClick(worldIn, playerIn, handIn);
     }
@@ -148,12 +175,17 @@ public class InfinitySB extends ItemSlashBlade {
     /**
      * 添加闪电实体
      */
-    private static void addBlot(World world, BlockPos pos, PlayerEntity player){
-        LightningBoltEntity lightningBolt = EntityType.LIGHTNING_BOLT.create(world);
-        if (lightningBolt != null) {
-            lightningBolt.moveForced(Vector3d.copyCenteredHorizontally(pos));
-            lightningBolt.setCaster(player instanceof ServerPlayerEntity ? (ServerPlayerEntity)player : null);
-            world.addEntity(lightningBolt);
+    private static void addBlot(World world, PlayerEntity player){
+        BlockPos pos = player.getPosition();
+        AxisAlignedBB alignedBB = new AxisAlignedBB(pos.add(-16, -8, -16), pos.add(16, 8, 16));
+        for (LivingEntity living : world.getEntitiesWithinAABB(LivingEntity.class, alignedBB)) {
+            if (living.isAlive() && !(living instanceof PlayerEntity)) {
+                ColorLightBolt colorLightBolt = new ColorLightBolt(EsEntityTypes.COLOR_LIGHT_BOLT.get(), world);
+                colorLightBolt.moveForced(Vector3d.copyCenteredHorizontally(living.getPosition()));
+                colorLightBolt.setCaster(player instanceof ServerPlayerEntity ? (ServerPlayerEntity) player : null);
+                colorLightBolt.setEffectOnly(false);
+                world.addEntity(colorLightBolt);
+            }
         }
     }
 

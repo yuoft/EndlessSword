@@ -1,5 +1,6 @@
 package com.yuo.es;
 
+import com.yuo.es.Entity.EsEntityTypes;
 import com.yuo.es.Items.ESItems;
 import com.yuo.es.Proxy.ClientProxy;
 import com.yuo.es.Proxy.CommonProxy;
@@ -20,6 +21,7 @@ public class EndlessSword {
 
 		//注册至mod总线
         ESItems.ITEMS.register(modEventBus);
+        EsEntityTypes.ENTITY_TYPES.register(modEventBus);
         proxy.registerHandlers();
 
     }
