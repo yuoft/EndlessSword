@@ -112,9 +112,8 @@ public class InfinitySB extends ItemSlashBlade {
     private static void hitDisEntity(PlayerEntity playerIn) {
         Attribute attribute = ForgeMod.REACH_DISTANCE.get();
         double dis = attribute.getDefaultValue() * 10;
-        if (playerIn.isSneaking()){
             Vector3d eyePosition = playerIn.getEyePosition(1.0f);
-            Vector3d lookVec = playerIn.getLook(1.0f);
+            Vector3d lookVec = playerIn.getLookVec();
             Vector3d add = eyePosition.add(lookVec.scale(dis));
             AxisAlignedBB alignedBB = new AxisAlignedBB(eyePosition, add);
             List<LivingEntity> entityList = playerIn.world.getEntitiesWithinAABB(LivingEntity.class, alignedBB);
@@ -123,9 +122,16 @@ public class InfinitySB extends ItemSlashBlade {
                     living.onKillCommand();
                 }
             }
-        }else {
-
-        }
+//            RayTraceHelper.rayTrace(playerIn.world, playerIn, playerIn.getEyePosition(1.0f), playerIn.getLookVec(), dis, dis, entity -> {
+//                if (entity instanceof LivingEntity){
+//                    LivingEntity living = (LivingEntity) entity;
+//                    if (living.isAlive() && !(living instanceof PlayerEntity)){
+//                        living.setGlowing(true);
+//                        living.onKillCommand();
+//                    }
+//                }
+//                return true;
+//            });
 
         /*
         Optional<RayTraceResult> result = RayTraceHelper.rayTrace(player.world, player, player.getEyePosition(1.0F), player.getLookVec(), 12.0, 12.0, (Predicate)null);
@@ -165,9 +171,9 @@ public class InfinitySB extends ItemSlashBlade {
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
         if (!worldIn.isRemote && worldIn instanceof ServerWorld) {
-//            if (!playerIn.isSneaking()){
+            if (!playerIn.isSneaking()){
                 hitDisEntity(playerIn);
-//            }else addBlot(worldIn, playerIn);
+            }else addBlot(worldIn, playerIn);
         }
         return super.onItemRightClick(worldIn, playerIn, handIn);
     }
