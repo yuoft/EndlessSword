@@ -7,9 +7,9 @@ import com.yuo.endless.Items.Tool.ColorText;
 import com.yuo.endless.Items.Tool.InfinityDamageSource;
 import com.yuo.endless.Items.Tool.MyItemTier;
 import com.yuo.es.EndlessSword;
+import com.yuo.es.Entity.InfinityJC;
 import mods.flammpfeil.slashblade.SlashBlade.RegistryEvents;
 import mods.flammpfeil.slashblade.client.renderer.SlashBladeTEISR;
-import mods.flammpfeil.slashblade.entity.EntityJudgementCut;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
 import mods.flammpfeil.slashblade.util.RayTraceHelper;
 import net.minecraft.client.resources.I18n;
@@ -29,6 +29,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.EntityRayTraceResult;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -38,9 +40,8 @@ import net.minecraftforge.common.ForgeMod;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
-
-import static mods.flammpfeil.slashblade.specialattack.JudgementCut.doJudgementCut;
 
 /**
  * 无尽拔刀剑 宇宙最强之刃
@@ -108,11 +109,57 @@ public class InfinitySB extends ItemSlashBlade {
         super.onPlayerStoppedUsing(stack, worldIn, entityLiving, timeLeft);
     }
 
-    public static EntityJudgementCut spawnJudgementCutJust(LivingEntity user) {
-        EntityJudgementCut sa = doJudgementCut(user);
+    public static InfinityJC spawnJudgementCutJust(LivingEntity user) {
+        InfinityJC sa = doJudgementCut(user);
         sa.setDamage(Float.POSITIVE_INFINITY);
         sa.setIsCritical(true);
         return sa;
+    }
+
+    public static InfinityJC doJudgementCut(LivingEntity user) {
+        World worldIn = user.world;
+        Vector3d eyePos = user.getEyePosition(1.0F);
+        double airReach = 5.0;
+        double entityReach = 7.0;
+        ItemStack stack = user.getHeldItemMainhand();
+        Optional<Vector3d> resultPos = (Optional)stack.getCapability(ItemSlashBlade.BLADESTATE).filter((s) -> s.getTargetEntity(worldIn) != null).map((s) -> {
+            return Optional.of(s.getTargetEntity(worldIn).getEyePosition(1.0F));
+        }).orElseGet(() -> {
+            return Optional.empty();
+        });
+        if (!resultPos.isPresent()) {
+            Optional<RayTraceResult> raytraceresult = RayTraceHelper.rayTrace(worldIn, user, eyePos, user.getLookVec(), 5.0, 7.0, (entity) -> {
+                return !entity.isSpectator() && entity.isAlive() && entity.canBeCollidedWith() && entity != user;
+            });
+            resultPos = raytraceresult.map((rtr) -> {
+                Vector3d pos = null;
+                RayTraceResult.Type type = rtr.getType();
+                switch (type) {
+                    case ENTITY:
+                        Entity target = ((EntityRayTraceResult)rtr).getEntity();
+                        pos = target.getPositionVec().add(0.0, (double)(target.getEyeHeight() / 2.0F), 0.0);
+                        break;
+                    case BLOCK:
+                        Vector3d hitVec = rtr.getHitVec();
+                        pos = hitVec;
+                }
+
+                return pos;
+            });
+        }
+
+        Vector3d pos = (Vector3d)resultPos.orElseGet(() -> {
+            return eyePos.add(user.getLookVec().scale(5.0));
+        });
+        InfinityJC jc = new InfinityJC(RegistryEvents.JudgementCut, worldIn);
+        jc.setPosition(pos.x, pos.y, pos.z);
+        jc.setShooter(user);
+        stack.getCapability(ItemSlashBlade.BLADESTATE).ifPresent((state) -> {
+            jc.setColor(state.getColorCode());
+        });
+        worldIn.addEntity(jc);
+        worldIn.playSound((PlayerEntity)null, jc.getPosX(), jc.getPosY(), jc.getPosZ(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 0.5F, 0.8F / (user.getRNG().nextFloat() * 0.4F + 0.8F));
+        return jc;
     }
 
     @Override
