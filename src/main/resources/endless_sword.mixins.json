@@ -5,7 +5,7 @@
   "refmap": "endless_sword.refmap.json",
   "plugin": "com.yuo.es.Mixin.MixinPlugin",
   "mixins": [
-    "SwordArtsMixin"
+    "LightBoltRenderMixin"
   ],
   "client": [
   ],

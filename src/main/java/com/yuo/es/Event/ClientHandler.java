@@ -2,12 +2,14 @@ package com.yuo.es.Event;
 
 import com.yuo.es.EndlessSword;
 import mods.flammpfeil.slashblade.SlashBlade.RegistryEvents;
+import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
 import mods.flammpfeil.slashblade.entity.EntityAbstractSummonedSword;
 import mods.flammpfeil.slashblade.event.InputCommandEvent;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
 import mods.flammpfeil.slashblade.util.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
@@ -59,10 +61,8 @@ public class ClientHandler {
                         }
 
                         return isMatch;
-                    }).map((r) -> {
-                        return ((EntityRayTraceResult)r).getEntity();
-                    })).filter(Optional::isPresent).map(Optional::get).findFirst();
-                    Vector3d targetPos = (Vector3d)foundTarget.map((e) -> {
+                    }).map((r) -> ((EntityRayTraceResult)r).getEntity())).filter(Optional::isPresent).map(Optional::get).findFirst();
+                    Vector3d targetPos = foundTarget.map((e) -> {
                         if (e instanceof Entity){
                             Entity e1 = (Entity)e;
                             return new Vector3d(e1.getPosX(), e1.getPosY() + (double)e1.getEyeHeight() * 0.5, e1.getPosZ());
@@ -76,19 +76,32 @@ public class ClientHandler {
                     });
                     int counter = StatHelper.increase(sender, RegistryEvents.SWORD_SUMMONED, 1);
                     boolean sided = counter % 2 == 0;
-                    EntityAbstractSummonedSword ss = new EntityAbstractSummonedSword(RegistryEvents.SummonedSword, worldIn);
-                    Vector3d pos = sender.getEyePosition(1.0F).add(VectorHelper.getVectorForRotation(0.0F, sender.getYaw(0.0F) + 90.0F).scale(sided ? 1.0 : -1.0));
-                    ss.setPosition(pos.x, pos.y, pos.z);
-                    Vector3d dir = targetPos.subtract(pos).normalize();
-                    ss.shoot(dir.x, dir.y, dir.z, 3.0F, 0.0F);
-                    ss.setShooter(sender);
-                    ss.setDamage(Float.POSITIVE_INFINITY);
-                    ss.setColor(state.getColorCode());
-                    ss.setRoll(sender.getRNG().nextFloat() * 360.0F);
-                    worldIn.addEntity(ss);
+                    for (int i = 0; i < 9; i++)
+                        sa(worldIn, sender, targetPos, state, sided);
                     sender.playSound(SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, SoundCategory.PLAYERS, 0.2F, 1.45F);
                 }
             });
         }
+    }
+
+    /**
+     * 生成sa
+     * @param worldIn
+     * @param sender
+     * @param targetPos
+     * @param state
+     * @param sided
+     */
+    private static void sa(World worldIn, PlayerEntity sender, Vector3d targetPos, ISlashBladeState state, boolean sided){
+        EntityAbstractSummonedSword ss = new EntityAbstractSummonedSword(RegistryEvents.SummonedSword, worldIn);
+        Vector3d pos = sender.getEyePosition(1.0F).add(VectorHelper.getVectorForRotation(0.0F, sender.getYaw(0.0F) + 90.0F).scale(sided ? 1.0 : -1.0));
+        ss.setPosition(pos.x, pos.y, pos.z);
+        Vector3d dir = targetPos.subtract(pos).normalize();
+        ss.shoot(dir.x, dir.y, dir.z, 3.0F, 0.0F);
+        ss.setShooter(sender);
+        ss.setDamage(Float.POSITIVE_INFINITY);
+        ss.setColor(state.getColorCode());
+        ss.setRoll(sender.getRNG().nextFloat() * 360.0F);
+        worldIn.addEntity(ss);
     }
 }

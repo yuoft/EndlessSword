@@ -10,7 +10,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = EndlessSword.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class EventClientHandler {
+public class ModClientHandler {
 
     @SubscribeEvent
     public static void Baked(ModelBakeEvent event) {

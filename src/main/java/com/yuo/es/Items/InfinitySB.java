@@ -7,18 +7,20 @@ import com.yuo.endless.Items.Tool.ColorText;
 import com.yuo.endless.Items.Tool.InfinityDamageSource;
 import com.yuo.endless.Items.Tool.MyItemTier;
 import com.yuo.es.EndlessSword;
-import com.yuo.es.Entity.ColorLightBolt;
-import com.yuo.es.Entity.EsEntityTypes;
 import mods.flammpfeil.slashblade.SlashBlade.RegistryEvents;
 import mods.flammpfeil.slashblade.client.renderer.SlashBladeTEISR;
+import mods.flammpfeil.slashblade.entity.EntityJudgementCut;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
+import mods.flammpfeil.slashblade.util.RayTraceHelper;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
+import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -37,6 +39,8 @@ import net.minecraftforge.common.ForgeMod;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Consumer;
+
+import static mods.flammpfeil.slashblade.specialattack.JudgementCut.doJudgementCut;
 
 /**
  * 无尽拔刀剑 宇宙最强之刃
@@ -100,56 +104,46 @@ public class InfinitySB extends ItemSlashBlade {
     }
 
     @Override
+    public void onPlayerStoppedUsing(ItemStack stack, World worldIn, LivingEntity entityLiving, int timeLeft) {
+        super.onPlayerStoppedUsing(stack, worldIn, entityLiving, timeLeft);
+    }
+
+    public static EntityJudgementCut spawnJudgementCutJust(LivingEntity user) {
+        EntityJudgementCut sa = doJudgementCut(user);
+        sa.setDamage(Float.POSITIVE_INFINITY);
+        sa.setIsCritical(true);
+        return sa;
+    }
+
+    @Override
     public boolean onLeftClickEntity(ItemStack itemstack, PlayerEntity playerIn, Entity entity) {
         if (entity instanceof LivingEntity) {
             LivingEntity livingEntity = (LivingEntity) entity;
             hit(livingEntity, playerIn);
+            spawnJudgementCutJust(playerIn);
         }
         hitDisEntity(playerIn);
         return super.onLeftClickEntity(itemstack, playerIn, entity);
     }
 
+    /**
+     * 模拟远距离攻击
+     * @param playerIn 玩家
+     */
     private static void hitDisEntity(PlayerEntity playerIn) {
         Attribute attribute = ForgeMod.REACH_DISTANCE.get();
         double dis = attribute.getDefaultValue() * 10;
-            Vector3d eyePosition = playerIn.getEyePosition(1.0f);
-            Vector3d lookVec = playerIn.getLookVec();
-            Vector3d add = eyePosition.add(lookVec.scale(dis));
-            AxisAlignedBB alignedBB = new AxisAlignedBB(eyePosition, add);
-            List<LivingEntity> entityList = playerIn.world.getEntitiesWithinAABB(LivingEntity.class, alignedBB);
-            for (LivingEntity living : entityList) {
+        RayTraceHelper.rayTrace(playerIn.world, playerIn, playerIn.getEyePosition(1.0f), playerIn.getLookVec(),
+                dis, dis, entity -> {
+            if (entity instanceof LivingEntity){
+                LivingEntity living = (LivingEntity) entity;
                 if (living.isAlive() && !(living instanceof PlayerEntity)){
+                    living.setGlowing(true);
                     living.onKillCommand();
                 }
             }
-//            RayTraceHelper.rayTrace(playerIn.world, playerIn, playerIn.getEyePosition(1.0f), playerIn.getLookVec(), dis, dis, entity -> {
-//                if (entity instanceof LivingEntity){
-//                    LivingEntity living = (LivingEntity) entity;
-//                    if (living.isAlive() && !(living instanceof PlayerEntity)){
-//                        living.setGlowing(true);
-//                        living.onKillCommand();
-//                    }
-//                }
-//                return true;
-//            });
-
-        /*
-        Optional<RayTraceResult> result = RayTraceHelper.rayTrace(player.world, player, player.getEyePosition(1.0F), player.getLookVec(), 12.0, 12.0, (Predicate)null);
-                        Optional<Entity> foundEntity = result.filter((r) -> {
-                            return r.getType() == Type.ENTITY;
-                        }).filter((r) -> {
-                            EntityRayTraceResult er = (EntityRayTraceResult)r;
-                            Entity target = ((EntityRayTraceResult)r).getEntity();
-                            boolean isMatch = true;
-                            if (target instanceof LivingEntity) {
-                                isMatch = TargetSelector.lockon_focus.canTarget(player, (LivingEntity)target);
-                            }
-
-                            return isMatch;
-                        }).map((r) -> {
-                            return ((EntityRayTraceResult)r).getEntity();
-                        });
-         */
+            return true;
+        });
     }
 
     @Override
@@ -186,10 +180,12 @@ public class InfinitySB extends ItemSlashBlade {
         AxisAlignedBB alignedBB = new AxisAlignedBB(pos.add(-16, -8, -16), pos.add(16, 8, 16));
         for (LivingEntity living : world.getEntitiesWithinAABB(LivingEntity.class, alignedBB)) {
             if (living.isAlive() && !(living instanceof PlayerEntity)) {
-                ColorLightBolt colorLightBolt = new ColorLightBolt(EsEntityTypes.COLOR_LIGHT_BOLT.get(), world);
+                LightningBoltEntity colorLightBolt = new LightningBoltEntity(EntityType.LIGHTNING_BOLT, world);
                 colorLightBolt.moveForced(Vector3d.copyCenteredHorizontally(living.getPosition()));
                 colorLightBolt.setCaster(player instanceof ServerPlayerEntity ? (ServerPlayerEntity) player : null);
                 colorLightBolt.setEffectOnly(false);
+                colorLightBolt.setDamage(Float.POSITIVE_INFINITY);
+                colorLightBolt.setCustomName(new StringTextComponent("endless_swrod:color_light_bolt"));
                 world.addEntity(colorLightBolt);
             }
         }
