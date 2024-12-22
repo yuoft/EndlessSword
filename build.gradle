@@ -7,6 +7,7 @@ buildscript {
             url 'https://lss233.littleservice.cn/repositories/minecraft/'
         }
         maven { url = 'https://maven.minecraftforge.net' }
+        mavenLocal()
         mavenCentral()
         maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
     }
@@ -95,6 +96,14 @@ repositories {
         name = "JEI"
         url = "https://dvs1.progwml6.com/files/maven"
     }
+    maven {
+        name = 'Draconic-Evolution'
+        url = "https://squiddev.cc/maven/"
+    }
+    maven {
+        name = "CCL"
+        url('https://maven.covers1624.net/')
+    }
     flatDir {
         dirs('libs')
     }
@@ -106,6 +115,10 @@ dependencies {
     runtimeOnly fg.deobf("curse.maven:jade-324717:3910873")
     runtimeOnly fg.deobf("curse.maven:i18nupdatemod-297404:5335196")
     runtimeOnly fg.deobf("curse.maven:torohealth-damage-indicators-245733:3144151")
+//    runtimeOnly fg.deobf("java.codechicken:CodeChickenLib:1.16.5-4.0.7.445-universal")
+    runtimeOnly fg.deobf("curse.maven:codechicken-lib-1-8-242818:3681973")
+    runtimeOnly fg.deobf("curse.maven:brandons-core-231382:3775813")
+    runtimeOnly fg.deobf("curse.maven:draconic-evolution-223565:3779345")
     implementation fg.deobf("curse.maven:slashblade-241596:3601907")
     implementation fg.deobf("curse.maven:avaritia-endless-624491:5973096")
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'

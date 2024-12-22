@@ -1,9 +1,9 @@
 package com.yuo.es.Event;
 
 import com.yuo.es.EndlessSword;
+import com.yuo.es.Entity.InfinitySA;
 import mods.flammpfeil.slashblade.SlashBlade.RegistryEvents;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
-import mods.flammpfeil.slashblade.entity.EntityAbstractSummonedSword;
 import mods.flammpfeil.slashblade.event.InputCommandEvent;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
 import mods.flammpfeil.slashblade.util.*;
@@ -93,7 +93,7 @@ public class ClientHandler {
      * @param sided
      */
     private static void sa(World worldIn, PlayerEntity sender, Vector3d targetPos, ISlashBladeState state, boolean sided){
-        EntityAbstractSummonedSword ss = new EntityAbstractSummonedSword(RegistryEvents.SummonedSword, worldIn);
+        InfinitySA ss = new InfinitySA(RegistryEvents.SummonedSword, worldIn);
         Vector3d pos = sender.getEyePosition(1.0F).add(VectorHelper.getVectorForRotation(0.0F, sender.getYaw(0.0F) + 90.0F).scale(sided ? 1.0 : -1.0));
         ss.setPosition(pos.x, pos.y, pos.z);
         Vector3d dir = targetPos.subtract(pos).normalize();

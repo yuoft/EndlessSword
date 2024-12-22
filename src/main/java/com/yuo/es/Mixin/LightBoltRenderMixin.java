@@ -12,7 +12,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.Objects;
 import java.util.Random;
 
 @Mixin(LightningBoltRenderer.class)
@@ -20,14 +19,14 @@ public abstract class LightBoltRenderMixin {
 
     @Inject(method = "render(Lnet/minecraft/entity/effect/LightningBoltEntity;FFLcom/mojang/blaze3d/matrix/MatrixStack;Lnet/minecraft/client/renderer/IRenderTypeBuffer;I)V"
     , at = @At("HEAD"), cancellable = true)
-    public void render(LightningBoltEntity p_225623_1_, float p_225623_2_, float p_225623_3_, MatrixStack p_225623_4_, IRenderTypeBuffer p_225623_5_, int p_225623_6_, CallbackInfo ci) {
-        boolean equals = "endless_swrod:color_light_bolt".equals(Objects.requireNonNull(p_225623_1_.getCustomName()).getString());
+    public void render(LightningBoltEntity boltEntity, float p_225623_2_, float p_225623_3_, MatrixStack p_225623_4_, IRenderTypeBuffer p_225623_5_, int p_225623_6_, CallbackInfo ci) {
+        boolean equals = "endless_swrod:color_light_bolt".equals(boltEntity.getCustomName() == null ? "" : boltEntity.getCustomName().getString());
         if (equals){
             float[] lvt_7_1_ = new float[8];
             float[] lvt_8_1_ = new float[8];
             float lvt_9_1_ = 0.0F;
             float lvt_10_1_ = 0.0F;
-            Random lvt_11_1_ = new Random(p_225623_1_.boltVertex);
+            Random lvt_11_1_ = new Random(boltEntity.boltVertex);
 
             for(int lvt_12_1_ = 7; lvt_12_1_ >= 0; --lvt_12_1_) {
                 lvt_7_1_[lvt_12_1_] = lvt_9_1_;
@@ -40,7 +39,7 @@ public abstract class LightBoltRenderMixin {
             Matrix4f lvt_12_2_ = p_225623_4_.getLast().getMatrix();
 
             for(int lvt_13_1_ = 0; lvt_13_1_ < 4; ++lvt_13_1_) {
-                Random lvt_14_1_ = new Random(p_225623_1_.boltVertex);
+                Random lvt_14_1_ = new Random(boltEntity.boltVertex);
 
                 for(int lvt_15_1_ = 0; lvt_15_1_ < 3; ++lvt_15_1_) {
                     int lvt_16_1_ = 7;
