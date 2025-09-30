@@ -1,0 +1,28 @@
+{
+  "type": "slashblade:shaped_blade",
+  "blade": "slashblade:warp_sb",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "item": "minecraft:blaze_powder"
+    },
+    "A": {
+      "item": "endless:crystal_matrix_ingot"
+    },
+    "E": {
+      "tag": "forge:obsidian"
+    },
+    "S": {
+      "item": "slashblade:proudsoul_crystal"
+    }
+  },
+  "pattern": [
+    " EA",
+    "BAS",
+    "AA "
+  ],
+  "result": {
+    "item": "slashblade:slashblade"
+  },
+  "show_notification": true
+}

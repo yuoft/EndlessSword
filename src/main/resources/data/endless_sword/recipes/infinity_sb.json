@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " AB",
+    " FA",
+    "C  "
+  ],
+  "key": {
+    "A": {
+      "item": "slashblade:proudsoul_crystal"
+    },
+    "B": {
+      "item": "minecraft:dragon_egg"
+    },
+    "F": {
+      "item": "endless:infinity_sword"
+    },
+    "C": {
+      "item": "endless:infinity_ingot"
+    }
+  },
+  "result": {
+    "item": "endless_sword:infinity_sb"
+  }
+}
