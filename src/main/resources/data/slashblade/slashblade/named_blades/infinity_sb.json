@@ -1,0 +1,34 @@
+{
+  "enchantments": [
+    {
+      "id": "minecraft:knockback",
+      "lvl": 10
+    },
+    {
+      "id": "minecraft:unbreaking",
+      "lvl": 10
+    },
+    {
+      "id": "minecraft:fire_aspect",
+      "lvl": 100
+    },
+    {
+      "id": "minecraft:looting",
+      "lvl": 10
+    }
+  ],
+  "name": "slashblade:infinity_sb",
+  "properties": {
+    "attack_base": 32726,
+    "max_damage": 327260,
+    "slash_art": "slashblade:judgement_cut",
+    "sword_type": [
+      "bewitched"
+    ]
+  },
+  "render": {
+    "model": "endless_sword:model/infinity_sb.obj",
+    "summon_sword_color":4248287,
+    "texture": "endless_sword:model/infinity_sb.png"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "type": "slashblade:shaped_blade",
+  "blade": "slashblade:infinity_sb",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "item": "minecraft:dragon_egg"
+    },
+    "A": {
+      "item": "endless:infinity_ingot"
+    },
+    "E": {
+      "tag": "forge:obsidian"
+    },
+    "S": {
+      "item": "slashblade:proudsoul_crystal"
+    }
+  },
+  "pattern": [
+    " EA",
+    "BAS",
+    "AA "
+  ],
+  "result": {
+    "item": "slashblade:slashblade"
+  },
+  "show_notification": true
+}

@@ -1,0 +1,22 @@
+{
+  "enchantments": [
+    {
+      "id": "minecraft:looting",
+      "lvl": 5
+    }
+  ],
+  "name": "slashblade:warp_sb",
+  "properties": {
+    "attack_base": 1024,
+    "max_damage": 2048,
+    "slash_art": "slashblade:void_slash",
+    "sword_type": [
+      "enchanted"
+    ]
+  },
+  "render": {
+    "model": "endless_sword:model/warp_sb.obj",
+    "summon_sword_color":4255587,
+    "texture": "endless_sword:model/warp_sb.png"
+  }
+}
