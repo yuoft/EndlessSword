@@ -4,7 +4,6 @@ import com.yuo.endless.Items.Tool.InfinityDamageTypes;
 import com.yuo.es.EndlessSword;
 import com.yuo.es.Items.InfinitySB;
 import mods.flammpfeil.slashblade.entity.Projectile;
-import net.minecraft.client.renderer.EffectInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.effect.MobEffectInstance;

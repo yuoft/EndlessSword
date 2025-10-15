@@ -1,6 +1,5 @@
 package com.yuo.es;
 
-import com.yuo.endless.Items.EndlessItems;
 import com.yuo.es.Items.ESItems;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;

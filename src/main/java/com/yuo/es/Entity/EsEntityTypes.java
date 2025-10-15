@@ -2,7 +2,6 @@ package com.yuo.es.Entity;
 
 import com.yuo.es.EndlessSword;
 import com.yuo.es.Items.InfinitySbItemEntity;
-import mods.flammpfeil.slashblade.entity.BladeItemEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.registries.DeferredRegister;

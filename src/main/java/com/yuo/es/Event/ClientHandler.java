@@ -1,7 +1,5 @@
 package com.yuo.es.Event;
 
-import com.yuo.endless.Client.Lib.ColorUtils;
-import com.yuo.endless.Client.Lib.ColourRGBA;
 import com.yuo.es.EndlessSword;
 import com.yuo.es.Entity.EsEntityTypes;
 import com.yuo.es.Entity.InfinitySA;
@@ -35,7 +33,6 @@ import net.minecraftforge.fml.common.Mod;
 import java.awt.*;
 import java.util.EnumSet;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = EndlessSword.MOD_ID)
 public class ClientHandler {
