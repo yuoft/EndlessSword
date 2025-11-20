@@ -9,6 +9,7 @@ import com.yuo.endless.Items.Tool.EndlessTiers;
 import com.yuo.endless.Items.Tool.InfinityDamageTypes;
 import com.yuo.es.EndlessSword;
 import com.yuo.es.Entity.InfinityJC;
+import com.yuo.es.RlUtils;
 import mods.flammpfeil.slashblade.SlashBlade.RegistryEvents;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
 import mods.flammpfeil.slashblade.event.SlashBladeEvent;
@@ -18,7 +19,6 @@ import mods.flammpfeil.slashblade.util.RayTraceHelper;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -73,8 +73,8 @@ public class InfinitySB extends ItemSlashBlade {
             LazyOptional<ISlashBladeState> state = stack.getCapability(BLADESTATE);
             state.ifPresent((s) -> {
                 s.setBaseAttackModifier(Float.MAX_VALUE);
-                s.setModel(ResourceLocation.fromNamespaceAndPath(EndlessSword.MOD_ID, "model/infinity_sb.obj"));
-                s.setTexture(ResourceLocation.fromNamespaceAndPath(EndlessSword.MOD_ID, "model/infinity_sb.png"));
+                s.setModel(RlUtils.fa("model/infinity_sb.obj"));
+                s.setTexture(RlUtils.fa("model/infinity_sb.png"));
 
                 float damage = s.getAttackAmplifier();
                 SlashBladeEvent.UpdateAttackEvent event = new SlashBladeEvent.UpdateAttackEvent(stack, s, damage);
@@ -123,8 +123,8 @@ public class InfinitySB extends ItemSlashBlade {
     public @NotNull ItemStack getDefaultInstance() {
         ItemStack stack = super.getDefaultInstance();
         stack.getCapability(ItemSlashBlade.BLADESTATE).ifPresent(e ->{
-            e.setModel(ResourceLocation.fromNamespaceAndPath(EndlessSword.MOD_ID, "model/infinity_sb.obj"));
-            e.setTexture(ResourceLocation.fromNamespaceAndPath(EndlessSword.MOD_ID, "model/infinity_sb.png"));
+            e.setModel(RlUtils.fa( "model/infinity_sb.obj"));
+            e.setTexture(RlUtils.fa("model/infinity_sb.png"));
             e.setSlashArtsKey(SlashArtsRegistry.CIRCLE_SLASH.getId());
         });
         return stack;
@@ -234,8 +234,8 @@ public class InfinitySB extends ItemSlashBlade {
     @Override
     public boolean onDroppedByPlayer(ItemStack item, Player player) {
         item.getCapability(ItemSlashBlade.BLADESTATE).ifPresent(e ->{
-            e.setModel(ResourceLocation.fromNamespaceAndPath(EndlessSword.MOD_ID, "model/infinity_sb.obj"));
-            e.setTexture(ResourceLocation.fromNamespaceAndPath(EndlessSword.MOD_ID, "model/infinity_sb.png"));
+            e.setModel(RlUtils.fa("model/infinity_sb.obj"));
+            e.setTexture(RlUtils.fa("model/infinity_sb.png"));
         });
         return super.onDroppedByPlayer(item, player);
     }
@@ -276,8 +276,8 @@ public class InfinitySB extends ItemSlashBlade {
         InfinitySbItemEntity e = new InfinitySbItemEntity(RegistryEvents.BladeItem, world);
         e.setItem(itemstack);
         e.copyPosition(location);
-        e.setModel(ResourceLocation.fromNamespaceAndPath(EndlessSword.MOD_ID, "model/infinity_sb.obj"));
-        e.setTexture(ResourceLocation.fromNamespaceAndPath(EndlessSword.MOD_ID, "model/infinity_sb.png"));
+        e.setModel(RlUtils.fa("model/infinity_sb.obj"));
+        e.setTexture(RlUtils.fa("model/infinity_sb.png"));
         e.init();
         return e;
     }
