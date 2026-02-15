@@ -2,11 +2,11 @@
   "enchantments": [
     {
       "id": "minecraft:knockback",
-      "lvl": 10
+      "lvl": 100
     },
     {
       "id": "minecraft:unbreaking",
-      "lvl": 10
+      "lvl": 100
     },
     {
       "id": "minecraft:fire_aspect",
@@ -14,7 +14,7 @@
     },
     {
       "id": "minecraft:looting",
-      "lvl": 10
+      "lvl": 100
     }
   ],
   "name": "slashblade:infinity_sb",

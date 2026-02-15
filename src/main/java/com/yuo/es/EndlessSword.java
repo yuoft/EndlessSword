@@ -22,11 +22,12 @@ public class EndlessSword {
 		//注册至mod总线
         ESItems.ITEMS.register(modEventBus);
         EsEntityTypes.ENTITY_TYPES.register(modEventBus);
-        ESTabs.TABS.register(modEventBus);
+//        ESTabs.TABS.register(modEventBus);
         proxy.registerHandlers(modEventBus);
 
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
+
     }
 }

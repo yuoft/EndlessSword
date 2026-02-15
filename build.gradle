@@ -96,7 +96,6 @@ dependencies {
 
     runtimeOnly fg.deobf("curse.maven:jade-324717:${jade_id}")
     runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
-    runtimeOnly fg.deobf("curse.maven:re-avaritia-623969:${ra_id}")
 
     annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
 }
