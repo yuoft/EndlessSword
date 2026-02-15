@@ -15,7 +15,8 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 public class EndlessSword {
 	public static final String MOD_ID = "endless_sword";
     public static final IProxy proxy = DistExecutor.safeRunForDist(() -> ClientProxy::new, () -> CommonProxy::new);
-	public EndlessSword() {
+    @SuppressWarnings("removal")
+    public EndlessSword() {
         final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         modEventBus.addListener(this::commonSetup);
 

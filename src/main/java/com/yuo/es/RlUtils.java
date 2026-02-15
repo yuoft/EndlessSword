@@ -3,6 +3,7 @@ package com.yuo.es;
 import net.minecraft.ResourceLocationException;
 import net.minecraft.resources.ResourceLocation;
 
+@SuppressWarnings("removal")
 public class RlUtils {
 
     public static ResourceLocation fa(String path){

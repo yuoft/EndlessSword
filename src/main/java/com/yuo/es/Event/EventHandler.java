@@ -46,6 +46,7 @@ public class EventHandler {
         }
     }
 
+    @SuppressWarnings("removal")
     @SubscribeEvent
     public static void reboundProjectile(ProjectileImpactEvent event) {
         Entity entity = event.getEntity();
