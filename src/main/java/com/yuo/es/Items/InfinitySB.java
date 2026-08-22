@@ -2,12 +2,11 @@ package com.yuo.es.Items;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-import com.yuo.endless.Config;
-import com.yuo.endless.Event.EventHandler;
-import com.yuo.endless.Items.Tool.ColorText;
-import com.yuo.endless.Items.Tool.EndlessTiers;
-import com.yuo.endless.Items.Tool.InfinityDamageTypes;
-import com.yuo.es.EndlessSword;
+import com.yuo.endless.config.ModConfig;
+import com.yuo.endless.event.EventHandler;
+import com.yuo.endless.items.tool.ColorText;
+import com.yuo.endless.items.tool.EndlessTiers;
+import com.yuo.endless.items.tool.InfinityDamageTypes;
 import com.yuo.es.Entity.InfinityJC;
 import com.yuo.es.RlUtils;
 import mods.flammpfeil.slashblade.SlashBlade.RegistryEvents;
@@ -321,9 +320,9 @@ public class InfinitySB extends ItemSlashBlade {
             if (target instanceof Player player) {
                 if (EventHandler.isInfinite(player)) {
                     if (EventHandler.isInfinityItem(player)) {
-                        target.hurt(InfinityDamageTypes.infinity(attacker), (float) Config.SERVER.infinityBearDamage.get());
+                        target.hurt(InfinityDamageTypes.infinity(attacker), (float) ModConfig.SERVER.infinityBearDamage.get());
                     } else {
-                        target.hurt(InfinityDamageTypes.infinity(attacker), (float) Config.SERVER.infinityArmorBearDamage.get());
+                        target.hurt(InfinityDamageTypes.infinity(attacker), (float) ModConfig.SERVER.infinityArmorBearDamage.get());
                     }
                 } else {
                     target.hurt(InfinityDamageTypes.infinity(attacker), Float.MAX_VALUE);
@@ -345,7 +344,7 @@ public class InfinitySB extends ItemSlashBlade {
                 target.die(InfinityDamageTypes.infinity(attacker));
             }
 
-            if (Config.SERVER.swordKill.get()) {
+            if (ModConfig.SERVER.swordKill.get()) {
                 target.kill();
                 target.deathTime = 20;
                 target.remove(RemovalReason.KILLED);

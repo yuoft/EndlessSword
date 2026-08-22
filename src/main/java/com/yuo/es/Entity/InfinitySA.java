@@ -1,7 +1,7 @@
 package com.yuo.es.Entity;
 
-import com.yuo.endless.Items.Tool.InfinityDamageTypes;
-import com.yuo.endless.Items.Tool.InfinitySword;
+import com.yuo.endless.EndlessUtils;
+import com.yuo.endless.items.tool.InfinityDamageTypes;
 import mods.flammpfeil.slashblade.entity.EntityAbstractSummonedSword;
 import mods.flammpfeil.slashblade.entity.Projectile;
 import net.minecraft.world.entity.Entity;
@@ -27,8 +27,8 @@ public class InfinitySA extends EntityAbstractSummonedSword {
             entity.hurt(InfinityDamageTypes.infinity(living), Float.MAX_VALUE);
         }
 
-        if (shooter instanceof Player player){
-            InfinitySword.damageGuardian(entity, player);
+        if (shooter instanceof Player player && entity instanceof LivingEntity living){
+            EndlessUtils.atkInfinity(living, player);
         }
     }
 }

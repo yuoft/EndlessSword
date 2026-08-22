@@ -1,6 +1,6 @@
 package com.yuo.es.Items;
 
-import com.yuo.endless.Config;
+import com.yuo.endless.config.ModConfig;
 import mods.flammpfeil.slashblade.SlashBlade.RegistryEvents;
 import mods.flammpfeil.slashblade.entity.BladeItemEntity;
 import net.minecraft.core.BlockPos;
@@ -96,7 +96,7 @@ public class InfinitySbItemEntity extends BladeItemEntity {
                 target.die(target.damageSources().fellOutOfWorld());
             }
 
-            if (Config.SERVER.swordKill.get()) {
+            if (ModConfig.SERVER.swordKill.get()) {
                 target.kill();
                 target.deathTime = 20;
                 target.remove(RemovalReason.KILLED);

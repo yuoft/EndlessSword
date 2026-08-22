@@ -1,6 +1,6 @@
 package com.yuo.es.Entity;
 
-import com.yuo.endless.Event.EventHandler;
+import com.yuo.endless.event.EventHandler;
 import mods.flammpfeil.slashblade.SlashBlade.RegistryEvents;
 import mods.flammpfeil.slashblade.entity.EntityJudgementCut;
 import mods.flammpfeil.slashblade.entity.EntitySlashEffect;

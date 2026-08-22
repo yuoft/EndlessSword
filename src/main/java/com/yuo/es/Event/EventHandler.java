@@ -1,6 +1,6 @@
 package com.yuo.es.Event;
 
-import com.yuo.endless.Items.Tool.InfinityDamageTypes;
+import com.yuo.endless.items.tool.InfinityDamageTypes;
 import com.yuo.es.EndlessSword;
 import com.yuo.es.Items.InfinitySB;
 import mods.flammpfeil.slashblade.entity.Projectile;
